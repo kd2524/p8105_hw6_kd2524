@@ -1,0 +1,53 @@
+---
+title: "P8105_ Homework 6"
+Author: Katherine Dimitropoulou
+output: github_document
+---
+
+
+```{r, include = FALSE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(readxl)
+library(haven)
+library(plotly)
+library(viridis)
+```
+
+## Problem 1
+Read in and clean birthweight data_ Clean variable names, drop missing data, recode variables to factor variables (i.e. babysex, race, etc.)
+```{r, include = FALSE, warning = FALSE, message = FALSE}
+birthweight_data = read_csv(file = "./data/birthweight.csv") %>% 
+  janitor::clean_names() %>% 
+  drop_na() %>% 
+  mutate(babysex = as.factor(babysex),
+         frace = as.factor(frace),
+         malform = as.factor(malform),
+         mrace = as.factor(mrace)
+         ) %>% 
+  mutate(babysex = recode(babysex,
+        '1' = "male", 
+        '2' = "female")
+        ) %>% 
+  mutate(mrace = recode(mrace,
+        '1' = "white", 
+        '2' = "black", 
+        '3' = "asian", 
+        '4' = "puerto rican",
+        '0' = "other")
+        ) %>% 
+  mutate(frace = recode(frace,
+        '1' = "white", 
+        '2' = "black", 
+        '3' = "asian", 
+        '4' = "puerto rican",
+        '0' = "other",
+        '9' = "unknown")
+        ) %>% 
+  mutate(malform = recode(malform,
+        '0' = "absent", 
+        '1' = "present")
+        ) %>% 
+  mutate_if(is.numeric, round, 2)
+```
